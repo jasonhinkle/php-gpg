@@ -1,7 +1,7 @@
 php-gpg
 =======
 
-php-gpg is a pure PHP implementation of PHP/GPG encryption.  
+php-gpg is a pure PHP implementation of GPG (currently encryption only)
 
 Features/Limitations
 --------------------
