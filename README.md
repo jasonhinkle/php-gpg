@@ -1,13 +1,17 @@
 php-gpg
 =======
 
-php-gpg is a pure PHP implementation of GPG (currently encryption only)
+php-gpg is a pure PHP implementation of GPG/PGP (currently supports encryption only).  The library does not require PGP/GPG binaries and should run on any platform that supports PHP.
+
+This library is useful for encrypting data before it is sent over an insecure protocol (for example email).  Messages encrypted with this library are compatible and can be decrypted by standard GPG/PGP clients.
 
 Features/Limitations
 --------------------
 
  * Supports RSA, DSA public key length of 2,4,8,16,512,1024,2048 or 4096
  * Currently supports only encrypt
+
+Hey You!  If you have a good understanding of public key encryption and want to implement signing or decryption your pull request would be welcome.
  
 Usage
 -----
