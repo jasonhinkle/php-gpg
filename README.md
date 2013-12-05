@@ -5,6 +5,10 @@ php-gpg does not seem to be working on PHP 5.5.x.  If you can provide any assist
 greatly appreciated.  So far I've found the behavior of array_merge has changed but after fixing
 that there is still a loop being created somewhere.  Thanks for any help you may be able to offer.
 
+likely suspects:
+ * (array_merge) http://www.php.net/array_merge (see warning)
+ * (pack/unpack) http://www.php.net/manual/en/migration55.incompatible.php
+
 php-gpg
 =======
 
