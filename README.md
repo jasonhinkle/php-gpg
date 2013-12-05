@@ -1,3 +1,10 @@
+WARNING FOR PHP 5.5.x OR HIGHER
+===============================
+
+php-gpg does not seem to be working on PHP 5.5.x.  If you can provide any assistance it would be 
+greatly appreciated.  So far I've found the behavior of array_merge has changed but after fixing
+that there is still a loop being created somewhere.  Thanks for any help you may be able to offer.
+
 php-gpg
 =======
 
