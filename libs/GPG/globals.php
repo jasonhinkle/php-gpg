@@ -115,7 +115,7 @@ function bmodexp($xx, $y, $m) {
     $r = array(1);
     $an = 0;
     $a = 0;
-    $x = array_merge($xx);
+    $x = array_merge((array)$xx);
     $n = count($m) * 2;
     $mu = array_fill(0, $n + 1, 0);
 
@@ -254,7 +254,7 @@ class bdiv {
 		$shift2 = floor(log($y[$t]) / M_LN2) + 1;
 		$shift = $bs - $shift2;
 		if ($shift) {
-			$x = array_merge($x); $y = array_merge($y);
+			$x = array_merge((array)$x); $y = array_merge((array)$y);
 			for($i = $t; $i > 0; $i--) $y[$i] = (($y[$i] << $shift) & $bm) | ($y[$i - 1] >> $shift2);
 			$y[0] = ($y[0] << $shift) & $bm;
 			if($x[$n] & (($bm << $shift2) & $bm)) {
@@ -268,7 +268,7 @@ class bdiv {
 		$j = 0;
 		$x2 = 0;
 		$q = zeros($nmt + 1);
-		$y2 = array_merge(zeros($nmt), $y);
+		$y2 = array_merge(zeros($nmt), (array)$y);
 		for (;;) {
 			$x2 = bsub($x, $y2);
 			if(count($x2) == 0) break;
@@ -359,7 +359,7 @@ function bmul($a, $b) {
     global $bd;
     global $bdm;
 
-    $b = array_merge($b, array(0));
+    $b = array_merge((array)$b, array(0));
     $al = count($a);
     $bl = count($b);
     $n = 0;
