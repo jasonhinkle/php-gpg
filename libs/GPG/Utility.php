@@ -117,7 +117,7 @@ class GPG_Utility
 		return $r;
 	}
 
-	function c_random() {
+	static function c_random() {
 		return round(rand(0, 0xff));
 	}
 

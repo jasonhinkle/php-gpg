@@ -17,7 +17,7 @@ require_once("GPG/globals.php");
  * @copyright 1997-2012 VerySimple, Inc.
  * @license http://www.gnu.org/licenses/gpl.html  GPL
  * @todo implement decryption
- * @version 1.0
+ * @version 1.1
  * 
  * @example 
  * 		require_once 'libs/GPG.php';
