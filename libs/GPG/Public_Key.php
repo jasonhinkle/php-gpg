@@ -78,45 +78,53 @@ class GPG_Public_Key {
 		}
 		
 		$len = 0;
-		$s = base64_decode($asc);
+		$s =  base64_decode($asc);
+		$sa = str_split($s);
+		
 		for($i = 0; $i < strlen($s);) {
-			$tag = ord($s[$i++]);
+			$tag = ord($sa[$i++]);
 			
 			if(($tag & 128) == 0) break;
 			
 			if($tag & 64) {
 				$tag &= 63;
-				$len = ord($s[$i++]);
-				if ($len > 191 && $len < 224) $len = (($len - 192) << 8) + ord($s[$i++]);
-				else if ($len == 255) $len = (ord($s[$i++]) << 24) + (ord($s[$i++]) << 16) + (ord($s[$i++]) << 8) + ord($s[$i++]);
+				$len = ord($sa[$i++]);
+				if ($len > 191 && $len < 224) $len = (($len - 192) << 8) + ord($sa[$i++]);
+				else if ($len == 255) $len = (ord($sa[$i++]) << 24) + (ord($sa[$i++]) << 16) + (ord($sa[$i++]) << 8) + ord($sa[$i++]);
 					else if ($len > 223 && len < 255) $len = (1 << ($len & 0x1f));
 			} else {
 				$len = $tag & 3;
 				$tag = ($tag >> 2) & 15;
-				if ($len == 0) $len = ord($s[$i++]);
-				else if($len == 1) $len = (ord($s[$i++]) << 8) + ord($s[$i++]);
-					else if($len == 2) $len = (ord($s[$i++]) << 24) + (ord($s[$i++]) << 16) + (ord($s[$i++]) << 8) + ord($s[$i++]);
+				if ($len == 0) $len = ord($sa[$i++]);
+				else if($len == 1) $len = (ord($sa[$i++]) << 8) + ord($sa[$i++]);
+					else if($len == 2) $len = (ord($sa[$i++]) << 24) + (ord($sa[$i++]) << 16) + (ord($sa[$i++]) << 8) + ord($sa[$i++]);
 						else $len = strlen($s) - 1;
 			}
 			
 			if ($tag == 6 || $tag == 14) {
 				$k = $i;
-				$version = ord($s[$i++]);
+				$version = ord($sa[$i++]);
 				$found = 1;
 				$this->version = $version;
 				
-				$time = (ord($s[$i++]) << 24) + (ord($s[$i++]) << 16) + (ord($s[$i++]) << 8) + ord($s[$i++]);
+				$time = (ord($sa[$i++]) << 24) + (ord($sa[$i++]) << 16) + (ord($sa[$i++]) << 8) + ord($sa[$i++]);
 				
-				if($version == 2 || $version == 3) $valid = ord($s[$i++]) << 8 + ord($s[$i++]);
+				if($version == 2 || $version == 3) $valid = ord($sa[$i++]) << 8 + ord($sa[$i++]);
 				
-				$algo = ord($s[$i++]);
+				$algo = ord($sa[$i++]);
+				
 				if($algo == 1 || $algo == 2) {
 					$m = $i;
-					$lm = floor((ord($s[$i]) * 256 + ord($s[$i + 1]) + 7) / 8);
+					$lm = floor((ord($sa[$i]) * 256 + ord($sa[$i + 1]) + 7) / 8);
 					$i += $lm + 2;
 					
+// 					//echo $s . "\n";
+// 					$zzz = $i+1;
+// 					echo "count=" . strlen($s)." :: index=$zzz = \n";
+// 					$yyy = $sa[$zzz];
+					
 					$mod = substr($s, $m, $lm + 2);
-					$le = floor((ord($s[$i]) * 256 + ord($s[$i+1]) + 7) / 8);
+					$le = floor((ord($sa[$i]) * 256 + ord($sa[$i+1]) + 7) / 8);
 					$i += $le + 2;
 					
 					$this->public_key = base64_encode(substr($s, $m, $lm + $le + 4));
@@ -138,13 +146,13 @@ class GPG_Public_Key {
 				} else if(($algo == 16 || $algo == 20) && $version == 4) {
 						$m = $i;
 						
-						$lp = floor((ord($s[$i]) * 256 + ord($s[$i +1]) + 7) / 8);
+						$lp = floor((ord($sa[$i]) * 256 + ord($sa[$i +1]) + 7) / 8);
 						$i += $lp + 2;
 						
-						$lg = floor((ord($s[$i]) * 256 + ord($s[$i + 1]) + 7) / 8);
+						$lg = floor((ord($sa[$i]) * 256 + ord($sa[$i + 1]) + 7) / 8);
 						$i += $lg + 2;
 						
-						$ly = floor((ord($s[$i]) * 256 + ord($s[$i + 1]) + 7)/8);
+						$ly = floor((ord($sa[$i]) * 256 + ord($sa[$i + 1]) + 7)/8);
 						$i += $ly + 2;
 						
 						$this->public_key = base64_encode(substr($s, $m, $lp + $lg + $ly + 6));
