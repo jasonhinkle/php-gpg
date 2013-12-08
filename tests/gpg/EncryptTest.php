@@ -39,7 +39,8 @@ class EncryptTest extends PHPUnit_Framework_TestCase
 	function getTestKey()
 	{
 		return "-----BEGIN PGP PUBLIC KEY BLOCK-----
-Version: GnuPG/MacGPG2 v2.0.19 (Darwin)
+Version: GnuPG/MacGPG2 v2.0.22 (Darwin)
+Comment: GPGTools - https://gpgtools.org
 
 mQINBFCr6/0BEADMIcXmkcH2uCskLlM7uwsd4Nk85yGlZqFs5G8HliWpI3zJafUv
 hQ7+OorA1QvIlsoVkROptTBD3eMDy4fWrV+emREmNWJgSpZcRhMFSFWqbt0khAeh

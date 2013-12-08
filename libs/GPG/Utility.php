@@ -10,6 +10,12 @@ srand((float) $gpg_sec + ((float) $gpg_usec * 100000));
  */
 class GPG_Utility
 {
+	
+	static function starts_with($haystack, $needle)
+	{
+		return $needle === "" || strpos($haystack, $needle) === 0;
+	}
+	
 	static function B0($x) {
 		return ($x & 0xff);
 	}

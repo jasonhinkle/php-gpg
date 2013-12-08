@@ -54,27 +54,29 @@ class GPG_Public_Key {
 		
 		if($i === false)
 		{
-			$this->version = "";
-			$this->fp = "";
-			$this->key_id = "";
-			$this->user = "";
-			$this->public_key = "";
-			
-			return;
+			throw new Exception("Missing block header in Public Key");
 		}
+		
+		// normalize line breaks
+		$asc = str_replace("\r\n", "\n", $asc);
+		
+		// remove all "comment" lines which we should ignore
+		$lines = explode("\n", $asc);
+		for ($ln = 0; $ln < count($lines); $ln++) {
+			$line = $lines[$ln];
+			if ( GPG_Utility::starts_with(  strtolower(trim($line))  , "comment:") ) {
+				echo "REMOVING LINE\n";
+				unset($lines[$ln]);
+			}
+		}
+		$asc = implode("\n", $lines);
 		
 		$a = strpos($asc, "\n", $i);
 		if ($a > 0) $a = strpos($asc, "\n", $a + 1);
 		$e = strpos($asc, "\n=", $i); 
 		if ($a > 0 && $e > 0) $asc = substr($asc, $a + 2, $e - $a - 2); 
 		else {
-			$this->version = "";
-			$this->fp = "";
-			$this->key_id = "";
-			$this->user = "";
-			$this->public_key = "";
-			
-			return;
+			throw new Exception("Unsupported Public Key format");
 		}
 		
 		$len = 0;
@@ -117,11 +119,6 @@ class GPG_Public_Key {
 					$m = $i;
 					$lm = floor((ord($sa[$i]) * 256 + ord($sa[$i + 1]) + 7) / 8);
 					$i += $lm + 2;
-					
-// 					//echo $s . "\n";
-// 					$zzz = $i+1;
-// 					echo "count=" . strlen($s)." :: index=$zzz = \n";
-// 					$yyy = $sa[$zzz];
 					
 					$mod = substr($s, $m, $lm + 2);
 					$le = floor((ord($sa[$i]) * 256 + ord($sa[$i+1]) + 7) / 8);
@@ -175,11 +172,13 @@ class GPG_Public_Key {
 		}
 		
 		if($found < 2) {  
-			$this->version = "";
-			$this->fp = "";
-			$this->key_id = "";
-			$this->user = ""; 
-			$this->public_key = "";
+			
+			throw new Exception("Unable to parse Public Key");
+// 			$this->version = "";
+// 			$this->fp = "";
+// 			$this->key_id = "";
+// 			$this->user = ""; 
+// 			$this->public_key = "";
 		}
 	}
 	
