@@ -131,25 +131,35 @@ class GPG_Public_Key {
 					} else if($version == 4) {
 						
 						// https://tools.ietf.org/html/rfc4880#section-12
-						$headerPos = 3;  // TODO: is this always the correct starting point for the pulic key packet 'version' field?
+						$headerPos = strpos($s, chr(0x04));  // TODO: is this always the correct starting point for the pulic key packet 'version' field?
 						$delim = chr(0x01) . chr(0x00);  // TODO: is this the correct delimiter for the end of the public key packet? 
-						$delimPos = strpos($s, $delim);
+						$delimPos = strpos($s, $delim) + (3-$headerPos);
+						
+						// echo "POSITION: $delimPos\n";
 						
 						$pkt = chr(0x99) . chr($delimPos >> 8) . chr($delimPos & 255) . substr($s, $headerPos, $delimPos);
 						
-						// this is the original signing string which seems to have always been incorrect...
-						// $pkt = chr(0x99) . chr($len >> 8) . chr($len & 255) . substr($s, $k, $len);
-						
-						// uncomment to debug and locate the correct signing string
-						//for ($ii = strlen($s); $ii > 1; $ii--) {
-						//	$pkt = chr(0x99) . chr($ii >> 8) . chr($ii & 255) . substr($s, $start, $ii);
-						//	$fp = sha1($pkt);
-						//	echo "LENGTH=" . $start . '->' . $ii . " CHR(" . ord(substr($s,$ii, 1)) . ") = " . substr($fp, strlen($fp) - 16, 16) . "\n";
-						//}
+						// this is the original signing string which seems to have only worked for key lengths of 1024 or less
+						//$pkt = chr(0x99) . chr($len >> 8) . chr($len & 255) . substr($s, $k, $len);
 						
 						$fp = sha1($pkt);
 						$this->fp = $fp;
 						$this->key_id = substr($fp, strlen($fp) - 16, 16);
+						
+						// uncomment to debug the start point for the signing string
+// 						for ($ii = 5; $ii > -1; $ii--) {
+// 							$pkt = chr(0x99) . chr($ii >> 8) . chr($ii & 255) . substr($s, $headerPos, $ii);
+// 							$fp = sha1($pkt);
+// 							echo "LENGTH=" . $headerPos . '->' . $ii . " CHR(" . ord(substr($s,$ii, 1)) . ") = " . substr($fp, strlen($fp) - 16, 16) . "\n";
+// 						}
+// 						echo "\n";
+						
+						// uncomment to debug the end point for the signing string
+// 						for ($ii = strlen($s); $ii > 1; $ii--) {
+// 							$pkt = chr(0x99) . chr($ii >> 8) . chr($ii & 255) . substr($s, $headerPos, $ii);
+// 							$fp = sha1($pkt);
+// 							echo "LENGTH=" . $headerPos . '->' . $ii . " CHR(" . ord(substr($s,$ii, 1)) . ") = " . substr($fp, strlen($fp) - 16, 16) . "\n";
+// 						}
 					} else {
 						throw new Exception('GPG Key Version ' . $version . ' is not supported');
 					}
