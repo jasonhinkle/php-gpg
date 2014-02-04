@@ -129,7 +129,24 @@ class GPG_Public_Key {
 						$this->fp = '';
 						$this->key_id = bin2hex(substr($mod, strlen($mod) - 8, 8));
 					} else if($version == 4) {
-						$pkt = chr(0x99) . chr($len >> 8) . chr($len & 255) . substr($s, $k, $len);
+						
+						// https://tools.ietf.org/html/rfc4880#section-12
+						$headerPos = 3;  // TODO: is this always the correct starting point for the pulic key packet 'version' field?
+						$delim = chr(0x01) . chr(0x00);  // TODO: is this the correct delimiter for the end of the public key packet? 
+						$delimPos = strpos($s, $delim);
+						
+						$pkt = chr(0x99) . chr($delimPos >> 8) . chr($delimPos & 255) . substr($s, $headerPos, $delimPos);
+						
+						// this is the original signing string which seems to have always been incorrect...
+						// $pkt = chr(0x99) . chr($len >> 8) . chr($len & 255) . substr($s, $k, $len);
+						
+						// uncomment to debug and locate the correct signing string
+						//for ($ii = strlen($s); $ii > 1; $ii--) {
+						//	$pkt = chr(0x99) . chr($ii >> 8) . chr($ii & 255) . substr($s, $start, $ii);
+						//	$fp = sha1($pkt);
+						//	echo "LENGTH=" . $start . '->' . $ii . " CHR(" . ord(substr($s,$ii, 1)) . ") = " . substr($fp, strlen($fp) - 16, 16) . "\n";
+						//}
+						
 						$fp = sha1($pkt);
 						$this->fp = $fp;
 						$this->key_id = substr($fp, strlen($fp) - 16, 16);
@@ -150,6 +167,8 @@ class GPG_Public_Key {
 						$i += $ly + 2;
 						
 						$this->public_key = base64_encode(substr($s, $m, $lp + $lg + $ly + 6));
+						
+						// TODO: should this be adjusted as it was for RSA (above)..?
 						
 						$pkt = chr(0x99) . chr($len >> 8) . chr($len & 255) . substr($s, $k, $len);
 						$fp = sha1($pkt);
