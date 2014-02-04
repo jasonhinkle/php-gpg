@@ -14,7 +14,7 @@ require_once 'GPG.php';
 /**
  * 
  */
-class EncryptTest extends PHPUnit_Framework_TestCase
+class KeyTest extends PHPUnit_Framework_TestCase
 {
 	/**
 	 * @see PHPUnit_Framework_TestCase::setUp()
@@ -34,7 +34,34 @@ class EncryptTest extends PHPUnit_Framework_TestCase
 	 * Return a public key used for encryption
 	 * @return string PGP public key
 	 */
-	function getTestKey()
+	function getOpenPGPTestKey()
+	{
+		return "-----BEGIN PGP PUBLIC KEY BLOCK-----
+Version: OpenPGP.js v.1.20140106
+Comment: http://openpgpjs.org
+
+xsBNBFLL5JEBCACFBaNfA4Iicm/MvO0sJcllB/iGc0qNgtqwpXGBydDt8Pj7
++mn0ZZ4Q1ol5wAYAxapGGaoEB1Wh5ALy2UvnrFx1/dyZEQhU3oUTRQevzhm1
+/gp/0l9bNijBONir1spMuDc7okXWaR8GCW0mWwmeFgXZnjL4Dmr6dUJvZHpX
+ZiekLPT3xHWQxrKdsafxmULVgd71ZdBq/6ikWQsK5XqBVykD2C/6jNDJ8Cga
+wzCs8WOSQkpss7L28qQrEkL3+JaLGEe3+6UUnzs5KjwgTZvlAawDkm55corz
+TistbvOotDVbs/nXyu6TnMhZXqJR2a0TEuRDXpS93qGr97flZKwVBp6vABEB
+AAHNF1Rlc3QgPHRlc3RAZXhhbXBsZS5jb20+wsBcBBABCAAQBQJSy+SZCRDI
+dThpeYYhmgAAVecH/R2IXW82smV41eDIwA9PzV6sKF7ywmlEl/zkZTEpTLaB
+bXM3wScspVHGWV7hO+9ZQImtdcqb2AFpNpBgBtpFypM2nMGdFxTzv0m3uRUs
+J8KT0lU0Uj4FEsr5YYCb1UWGgDrZP+vZFxfw8j+NWGIS5NlLHPeTTMJVRhKX
+Xe0c8AaAF8qz10+JyapyDlUlFVr8+n/UjGwsUp15ODnDt0nsGTfw6jKelTU2
+y/d0ckERWE0rWT2eooAxqxIoVayJkEZTzbfx/mHJXeGhOFwjg5danv7JnDI/
+FHAUVqBD8zTkqmjdk9LZ6GnF6tuKRAWS59qU7y4+fchP58dhjep0mIFa6FQ=
+=8aNP
+-----END PGP PUBLIC KEY BLOCK-----";
+	}
+	
+	/**
+	 * Return a public key used for encryption
+	 * @return string PGP public key
+	 */
+	function getGnuPGTestKey()
 	{
 		return "-----BEGIN PGP PUBLIC KEY BLOCK-----
 Version: GnuPG/MacGPG2 v2.0.22 (Darwin)
@@ -104,30 +131,37 @@ rrkM+tFI6ij510nyAL0uF4l3vc3aBQ90I3iS9J51j1MQQ2pt8/3Ofq5CiHKNUGPL
 	}
 	
 	/**
-	 * Test that basic encryption returns a valid encrypted message
+	 * Test key ID
 	 */
-	function test_Encrypt()
+	function test_VerifyGnuPGKey()
 	{
 		// jason's public key
-		$public_key_ascii = $this->getTestKey();
-		
-		// plain text message
-		$plain_text_string = "Whatever 90's tote bag, meggings put a bird on it cray bicycle rights vinyl semiotics Wes Anderson. Selvage Austin umami, letterpress Tumblr deep v kitsch polaroid. Trust fund messenger bag sartorial gluten-free, cred cray church-key pop-up Intelligentsia. Food truck Tumblr paleo mixtape XOXO banjo PBR&B Pinterest tofu banh mi. Portland messenger bag cornhole PBR Tonx High Life, DIY pork belly bespoke hoodie Terry Richardson dreamcatcher ethical forage. Put a bird on it slow-carb mixtape cardigan craft beer messenger bag. Aesthetic twee art party, Odd Future trust fund banjo ugh small batch semiotics.
-
-Whatever asymmetrical keffiyeh literally narwhal. Keytar Odd Future blog, wayfarers literally gluten-free beard. Authentic Cosby sweater sustainable hashtag, VHS food truck kogi seitan put a bird on it YOLO. Selvage tousled mustache, flannel craft beer try-hard McSweeney's literally four loko YOLO keytar beard synth forage. Salvia Schlitz narwhal Terry Richardson typewriter, Wes Anderson butcher wolf. Slow-carb whatever bitters, letterpress trust fund pug before they sold out food truck artisan tousled. Church-key Vice craft beer Wes Anderson artisan flexitarian, kogi YOLO hella Tonx chia Neutra.
-
-Farm-to-table actually Portland, artisan shabby chic vinyl organic seitan roof party distillery. Street art PBR&B banh mi, Tonx authentic you probably haven't heard of them fixie whatever tofu gluten-free. Gentrify locavore lo-fi umami, Thundercats salvia wolf four loko. Mixtape messenger bag gluten-free, squid American Apparel hella Shoreditch whatever selfies sriracha before they sold out. Pickled farm-to-table Intelligentsia occupy. Tumblr Etsy farm-to-table, mlkshk hella shabby chic meh jean shorts dreamcatcher fashion axe trust fund lomo Neutra. Freegan vegan narwhal tousled hoodie wolf flexitarian.
-
-Flannel sriracha XOXO, slow-carb Godard ennui tousled American Apparel street art drinking vinegar lo-fi blog. Whatever Intelligentsia cardigan, Pinterest PBR&B pop-up semiotics. Jean shorts chillwave semiotics biodiesel. McSweeney's fap cardigan messenger bag fanny pack Cosby sweater Odd Future, Pitchfork four loko Marfa keytar mlkshk. 3 wolf moon McSweeney's gluten-free, umami freegan biodiesel fingerstache aesthetic sriracha swag Echo Park. Shabby chic selfies fixie, art party XOXO four loko chambray post-ironic letterpress messenger bag. Mustache beard lo-fi, flexitarian artisan tofu freegan occupy kale chips Carles twee chia bespoke.";
+		$public_key_ascii = $this->getGnuPGTestKey();
 		
 		$gpg = new GPG();
 		$pub_key = new GPG_Public_Key($public_key_ascii);
-		$encrypted = $gpg->encrypt($pub_key,$plain_text_string);
 		
-		$this->assertContains('-----BEGIN PGP MESSAGE-----', $encrypted, 'PGP Header Expected');
-		
-		$this->assertContains('-----END PGP MESSAGE-----', $encrypted, 'PGP Footer Expected');
+		$this->assertEquals(PK_TYPE_RSA,$pub_key->GetKeyType(),'OpenPGP Incorrect Key Type');
+		$this->assertEquals('47009B66424E9476',$pub_key->GetKeyId(),'OpenPGP Incorrect Key ID');
+		$this->assertEquals('ED4F E89E 38A3 7833 3CD4 D6FA 4700 9B66 424E 9476',$pub_key->GetFingerprint(),'OpenPGP Incorrect Fingerprint');
 
+ 	}
+	
+	/**
+	 * Test key ID (currently failing with ID 38B09C3E598ED36F instead of C87538697986219A
+	 */
+	function test_VerifyOpenPGPKey()
+	{
+		// OpenPGP Test Key
+		$public_key_ascii = $this->getOpenPGPTestKey();
+
+		$gpg = new GPG();
+		$pub_key = new GPG_Public_Key($public_key_ascii);
+			
+		$this->assertEquals(PK_TYPE_RSA,$pub_key->GetKeyType(),'OpenPGP Incorrect Key Type');
+		$this->assertEquals('C87538697986219A',$pub_key->GetKeyId(),'OpenPGP Incorrect Key ID');
+		$this->assertEquals('3C05 9D07 C624 84A4 EF2D 3651 C875 3869 7986 219A',$pub_key->GetFingerprint(),'OpenPGP Incorrect Fingerprint');
+	
 	}
 
 }

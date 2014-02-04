@@ -37,10 +37,15 @@ class GPG_Public_Key {
 		if (!strcmp($this->type, "RSA")) return PK_TYPE_RSA;
 		return PK_TYPE_UNKNOWN;
 	}
+
+	function GetFingerprint()
+	{
+		return strtoupper( trim(chunk_split($this->fp, 4, ' ')) );
+	}
 	
 	function GetKeyId()
 	{
-		return (strlen($this->key_id) == 16) ? $this->key_id : '0000000000000000';
+		return (strlen($this->key_id) == 16) ? strtoupper($this->key_id) : '0000000000000000';
 	}
 	
 	function GetPublicKey()
@@ -50,34 +55,23 @@ class GPG_Public_Key {
 	
 	function GPG_Public_Key($asc) {
 		$found = 0;
-		$i = strpos($asc, "-----BEGIN PGP PUBLIC KEY BLOCK-----");
-		
-		if($i === false)
-		{
-			throw new Exception("Missing block header in Public Key");
-		}
 		
 		// normalize line breaks
 		$asc = str_replace("\r\n", "\n", $asc);
 		
-		// remove all "comment" lines which we should ignore
-		$lines = explode("\n", $asc);
-		for ($ln = 0; $ln < count($lines); $ln++) {
-			$line = $lines[$ln];
-			if ( GPG_Utility::starts_with(  strtolower(trim($line))  , "comment:") ) {
-				echo "REMOVING LINE\n";
-				unset($lines[$ln]);
-			}
-		}
-		$asc = implode("\n", $lines);
+		if (strpos($asc, "-----BEGIN PGP PUBLIC KEY BLOCK-----\n") === false)
+			throw new Exception("Missing header block in Public Key");
+
+		if (strpos($asc, "\n\n") === false)
+			throw new Exception("Missing body delimiter in Public Key");
 		
-		$a = strpos($asc, "\n", $i);
-		if ($a > 0) $a = strpos($asc, "\n", $a + 1);
-		$e = strpos($asc, "\n=", $i); 
-		if ($a > 0 && $e > 0) $asc = substr($asc, $a + 2, $e - $a - 2); 
-		else {
-			throw new Exception("Unsupported Public Key format");
-		}
+		if (strpos($asc, "\n-----END PGP PUBLIC KEY BLOCK-----") === false)
+			throw new Exception("Missing footer block in Public Key");
+		
+		// get rid of everything except the base64 encoded key
+		$headerbody = explode("\n\n", str_replace("\n-----END PGP PUBLIC KEY BLOCK-----", "", $asc), 2);
+		$asc = trim($headerbody[1]);
+		
 		
 		$len = 0;
 		$s =  base64_decode($asc);
@@ -85,6 +79,8 @@ class GPG_Public_Key {
 		
 		for($i = 0; $i < strlen($s);) {
 			$tag = ord($sa[$i++]);
+			
+			// echo 'TAG=' . $tag . '/';
 			
 			if(($tag & 128) == 0) break;
 			
@@ -102,6 +98,8 @@ class GPG_Public_Key {
 					else if($len == 2) $len = (ord($sa[$i++]) << 24) + (ord($sa[$i++]) << 16) + (ord($sa[$i++]) << 8) + ord($sa[$i++]);
 						else $len = strlen($s) - 1;
 			}
+			
+			// echo $tag . ' ';
 			
 			if ($tag == 6 || $tag == 14) {
 				$k = $i;
@@ -131,14 +129,13 @@ class GPG_Public_Key {
 						$this->fp = '';
 						$this->key_id = bin2hex(substr($mod, strlen($mod) - 8, 8));
 					} else if($version == 4) {
-							$pkt = chr(0x99) . chr($len >> 8) . chr($len & 255) . substr($s, $k, $len);
-							$fp = sha1($pkt);
-							$this->fp = $fp;
-							$this->key_id = substr($fp, strlen($fp) - 16, 16);
-						} else {
-							$this->fp = "";
-							$this->key_id = "";
-						}
+						$pkt = chr(0x99) . chr($len >> 8) . chr($len & 255) . substr($s, $k, $len);
+						$fp = sha1($pkt);
+						$this->fp = $fp;
+						$this->key_id = substr($fp, strlen($fp) - 16, 16);
+					} else {
+						throw new Exception('GPG Key Version ' . $version . ' is not supported');
+					}
 					$found = 2;
 				} else if(($algo == 16 || $algo == 20) && $version == 4) {
 						$m = $i;
