@@ -50,6 +50,9 @@ class GPG_Public_Key {
 
 	/**
 	 * Returns computed fingerprint for the last found public key or subkey in the data
+	 * Note: In the case of a key with sub-keys, his method will always return the 
+	 * fingerprint for the key that is used for encryption, which may not 
+	 * necessarily match the identifying fingerprint that is displayed by other clients
 	 * @return mixed
 	 */
 	function GetFingerprint()
@@ -59,6 +62,9 @@ class GPG_Public_Key {
 	
 	/**
      * Returns the 16-bytes ID of the last found public key or subkey in the data
+	 * Note: In the case of a key with sub-keys, his method will always return the 
+	 * ID for the key that is used for encryption, which may not 
+	 * necessarily match the identifying ID that is displayed by other clients
 	 * @return mixed
 	 */
 	function GetKeyId()
