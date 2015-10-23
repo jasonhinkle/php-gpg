@@ -35,8 +35,6 @@ class GPG
 	private function gpg_encrypt($key, $text) {
 
 		$i = 0;
-		$i = 0;
-		$len = strlen($text);
 		$len = strlen($text);
 		$iblock = array_fill(0, $this->width, 0);
 		$rblock = array_fill(0, $this->width, 0);
