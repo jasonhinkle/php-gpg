@@ -174,7 +174,7 @@ class GPG
 			$this->gpg_data($session_key, $plaintext);
 
 		$code = base64_encode($cp);
-		$code = wordwrap($code, 60, "\n", 1);
+		$code = wordwrap($code, 64, "\n", 1);
 
 		return
 			"-----BEGIN PGP MESSAGE-----\nVersion: VerySimple PHP-GPG v".$this->version."\n\n" .
