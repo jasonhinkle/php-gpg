@@ -139,7 +139,7 @@ class GPG_Public_Key {
                     $len = (($len - 192) << 8) + ord($sa[$i++]) + 192; // there was a bug here - fixed with RFC4880 4.2.2.2.
 				else if ($len == 255)
                     $len = (ord($sa[$i++]) << 24) + (ord($sa[$i++]) << 16) + (ord($sa[$i++]) << 8) + ord($sa[$i++]);
-                else if ($len > 223 && len < 255)
+                else if ($len > 223 && $len < 255)
                     $len = (1 << ($len & 0x1f));
                 // else, length is less or equal 191, so no transform is needed.
 			} else {
