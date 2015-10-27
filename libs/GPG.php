@@ -35,8 +35,6 @@ class GPG
 	private function gpg_encrypt($key, $text) {
 
 		$i = 0;
-		$i = 0;
-		$len = strlen($text);
 		$len = strlen($text);
 		$iblock = array_fill(0, $this->width, 0);
 		$rblock = array_fill(0, $this->width, 0);
@@ -174,7 +172,7 @@ class GPG
 			$this->gpg_data($session_key, $plaintext);
 
 		$code = base64_encode($cp);
-		$code = wordwrap($code, 60, "\n", 1);
+		$code = wordwrap($code, 64, "\n", 1);
 
 		return
 			"-----BEGIN PGP MESSAGE-----\nVersion: VerySimple PHP-GPG v".$this->version."\n\n" .
