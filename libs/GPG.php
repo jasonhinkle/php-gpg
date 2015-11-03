@@ -96,7 +96,8 @@ class GPG
 		return $h;
 	}
 
-	private function writeNumber($n, $bytes) {
+	private function writeNumber($n, $bytes)
+	{
 		// credits for this function go to OpenPGP.js
 		$b = '';
 		for ($i = 0; $i < $bytes; $i++) {
