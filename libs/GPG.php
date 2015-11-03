@@ -95,6 +95,7 @@ class GPG
 		}
 		return $h;
 	}
+
 	private function writeNumber($n, $bytes) {
 		// credits for this function go to OpenPGP.js
 		$b = '';
@@ -103,6 +104,7 @@ class GPG
 		}
 		return $b;
 	}
+
 	private function gpg_session($key_id, $key_type, $session_key, $public_key)
 	{ 
 
