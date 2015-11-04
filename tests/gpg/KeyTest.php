@@ -8,7 +8,7 @@ set_include_path(
 		PATH_SEPARATOR . get_include_path()
 );
 
-require_once 'PHPUnit/Framework/TestCase.php';
+if (!class_exists('PHPUnit_Framework_TestCase')) require_once 'PHPUnit/Framework/TestCase.php';
 require_once 'GPG.php';
 
 /**

@@ -1,3 +1,4 @@
 /.buildpath
 /.settings
+/tests/coverage
 .DS_Store
