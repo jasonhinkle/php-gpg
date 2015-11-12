@@ -1,0 +1,15 @@
+{
+    "name": "jasonhinkle/php-gpg",
+    "description": "GPG / PGP port written in pure PHP with no binary dependencies",
+    "type": "library",
+    "keywords": ["gpg"],
+    "license": "GPL",
+    "authors": [
+        {
+            "name": "Jason Hinkle"
+        }
+    ],
+	"autoload": {
+		"classmap": ["libs/GPG.php"]
+	}
+}
