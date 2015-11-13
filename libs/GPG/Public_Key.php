@@ -116,8 +116,7 @@ class GPG_Public_Key {
                                    // $len = (ord($sa[$i++])* pow(2,24)) + (ord($sa[$i++]) * pow(2,16)) + (0 * pow(2,8)) + 0;
                                 }
                     
-                        else
-                        $len = strlen($s) - 1;
+                        else $len = strlen($s) - 1;
 			}
 			
 			// echo $tag . ' ';
