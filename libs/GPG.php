@@ -192,7 +192,7 @@ class GPG
 
 		$code = base64_encode($cp);
 		$code = wordwrap($code, 64, "\n", 1);
-		
+
 		if($versionHeader===NULL) $versionHeader="Version: VerySimple PHP-GPG v" . $this->version . "\n\n";
 		else if (strlen($versionHeader)>0)$versionHeader="Version: " . $versionHeader . "\n\n";
 
