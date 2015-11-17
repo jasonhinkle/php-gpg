@@ -178,7 +178,7 @@ class GPG
 	 * @param string $versionHeader
 	 * @return string encrypted text
 	 */
-	function encrypt($pk, $plaintext)
+	function encrypt($pk, $plaintext, $versionHeader=NULL)
 	{
 		// normalize the public key
 		$key_id = $pk->GetKeyId();
