@@ -176,9 +176,10 @@ class GPG
 	 *
 	 * @param GPG_Public_Key $pk
 	 * @param string $plaintext
+	 * @param string $versionHeader
 	 * @return string encrypted text
 	 */
-	function encrypt($pk, $plaintext)
+	function encrypt($pk, $plaintext, $versionHeader=NULL)
 	{
 		// normalize the public key
 		$key_id = $pk->GetKeyId();
@@ -188,13 +189,17 @@ class GPG
 		$session_key = GPG_Utility::s_random($this->width, 0);
 		$key_id = GPG_Utility::hex2bin($key_id);
 		$cp = $this->gpg_session($key_id, $key_type, $session_key, $public_key) .
-			$this->gpg_data($session_key, $plaintext);
+		$this->gpg_data($session_key, $plaintext);
 
 		$code = base64_encode($cp);
 		$code = wordwrap($code, 64, "\n", 1);
 
+		if($versionHeader===NULL) $versionHeader="Version: VerySimple PHP-GPG v" . $this->version . "\n\n";
+		else if (strlen($versionHeader)>0)$versionHeader="Version: " . $versionHeader . "\n\n";
+
 		return
-			"-----BEGIN PGP MESSAGE-----\nVersion: VerySimple PHP-GPG v".$this->version."\n\n" .
+			"-----BEGIN PGP MESSAGE-----\n" .
+			$versionHeader .
 			$code . "\n=" . base64_encode(GPG_Utility::crc24($cp)) .
 			"\n-----END PGP MESSAGE-----\n";
 	}
