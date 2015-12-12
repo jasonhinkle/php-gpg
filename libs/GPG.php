@@ -53,20 +53,6 @@ class GPG
 			$rblock[$i] = GPG_Utility::c_random();
 		}
 
-
-		$iblock = GPG_AES::encrypt($iblock, $ekey);
-		for($i = 0; $i < $this->width; $i++) {
-			$ct[$i] = ($iblock[$i] ^= $rblock[$i]);
-		}
-
-		$iblock = GPG_AES::encrypt($iblock, $ekey);
-		$ct[$this->width]   = ($iblock[0] ^ $rblock[$this->width - 2]);
-		$ct[$this->width + 1] = ($iblock[1] ^ $rblock[$this->width - 1]);
-	 
-		for($i = 0; $i < $this->width + 2; $i++) $cipher .= chr($ct[$i]);
-
-		$iblock = array_slice($ct, 2, $this->width + 2);
-
 		for($n = 0; $n < strlen($text); $n += $this->width) {
 			$iblock = GPG_AES::encrypt($iblock, $ekey);
 			for($i = 0; $i < $this->width; $i++) {
@@ -75,7 +61,7 @@ class GPG
 			}
 		}
 	 
-		return substr($cipher, 0, $len + $this->width + 2);
+		return substr($cipher, 0, $len);
 	}
 
 	private function gpg_header($tag, $len)
@@ -160,15 +146,16 @@ class GPG
 		if (strpos($text, "\r\n") === false)
 			$text = str_replace("\n", "\r\n", $text);
 
-		return
-		$this->gpg_header(0xac, strlen($text) + 10) . "t" .
-			chr(4) . "file\0\0\0\0" . $text;
+		return chr(11 | 0xC0) . chr(255) . $this->writeNumber(strlen($text) + 10, 4) . "t" . chr(4) . "file\0\0\0\0" . $text;
 	}
 
 	private function gpg_data($key, $text)
 	{
-		$enc = $this->gpg_encrypt($key, $this->gpg_literal($text));
-		return $this->gpg_header(0xa4, strlen($enc)) . $enc;
+		$prefix = GPG_Utility::s_random($this->width, 0);
+		$prefix .= substr($prefix, -2);
+		$mdc="\xD3\x14".hash('sha1', $prefix.$this->gpg_literal($text)."\xD3\x14", true);
+		$enc = $this->gpg_encrypt($key, $prefix.$this->gpg_literal($text).$mdc);
+		return chr(0x12 | 0xC0) . chr(255) . $this->writeNumber(1+strlen($enc), 4) . chr(1) . $enc;
 	}
 
 	/**
