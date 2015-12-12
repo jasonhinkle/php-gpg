@@ -29,7 +29,7 @@ class GPG
 
 	private $width = 16;
 	private $el = array(3, 5, 9, 17, 513, 1025, 2049, 4097);
-	private $version = "1.5.0";
+	private $version = "1.6.0";
 
 	private function gpg_encrypt($key, $text) {
 
