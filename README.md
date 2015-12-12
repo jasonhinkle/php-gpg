@@ -10,6 +10,7 @@ Features/Limitations
 
  * Supports RSA, DSA public key length of 2,4,8,16,512,1024,2048 or 4096
  * Currently supports only encrypt
+ * Encrypted messages are integrity protected (php-gpg 1.6.0+)
 
 Hey You!  If you have a good understanding of public key encryption and want to implement signing or decryption your pull request would be welcome.
  
