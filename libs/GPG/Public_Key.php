@@ -90,7 +90,7 @@ class GPG_Public_Key {
 	 * @param mixed $asc ASCII-Armored public PGP key data
 	 * @throws Exception if the key data is invalid or contains functions that are not supported
 	 */
-	function GPG_Public_Key($asc) {
+	function __construct($asc) {
 		$found = 0;
 		
 		$asc = str_replace("\r\n", "\n", $asc); // normalize line breaks
