@@ -1,10 +1,6 @@
 <?php
 /** @package    php-gpg::GPG */
 
-/** seed rand */
-list($gpg_usec, $gpg_sec) = explode(' ', microtime());
-srand((float) $gpg_sec + ((float) $gpg_usec * 100000));
-
 /**
  * @package    php-gpg::GPG
  */
