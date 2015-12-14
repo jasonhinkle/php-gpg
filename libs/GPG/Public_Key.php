@@ -53,7 +53,7 @@ class GPG_Public_Key {
 		return str_replace("\n", "", $this->public_key);
 	}
 	
-	function GPG_Public_Key($asc) {
+	function __construct($asc) {
 		$found = 0;
 		
 		// normalize line breaks
