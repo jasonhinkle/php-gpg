@@ -32,9 +32,14 @@ echo $encrypted;
 
 ```
 
+Credits
+-------
+
+* php-gpg utlizes [random_compat](https://github.com/paragonie/random_compat) under the [MIT license](https://opensource.org/licenses/MIT)
+
 License
 -------
 
 GPL http://www.gnu.org/copyleft/gpl.html
 
-I'd like to release this under a more permissive license, but since PGP & GPG itself are GPL, I think this library is likely bound to the terms of GPL as well.
+php-gpg was originally a port of GPG C code to PHP, as such to be safe, is also licensed under the GPL
