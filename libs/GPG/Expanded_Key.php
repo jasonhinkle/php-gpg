@@ -11,7 +11,7 @@ class Expanded_Key {
     var $rounds;
     var $rk;
 
-	function Expanded_Key($key) {
+	function __construct($key) {
         $RCON = GPG_Cipher::$RCON;
         $S = GPG_Cipher::$S;
 
