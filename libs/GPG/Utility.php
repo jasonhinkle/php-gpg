@@ -113,7 +113,7 @@ class GPG_Utility
 		$r = "";
 		for($i = 0; $i < $len;)
 		{
-			$t = rand(0, 0xff);
+			$t = random_int(0, 0xff);
 			if($t == 0 && $textmode) continue;
 			$i++;
 
@@ -124,7 +124,7 @@ class GPG_Utility
 	}
 
 	static function c_random() {
-		return round(rand(0, 0xff));
+		return random_int(0, 0xff);
 	}
 
 }
