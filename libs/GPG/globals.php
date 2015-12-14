@@ -219,7 +219,7 @@ function zeros($n) {
 class bdiv {
 	var $q;
 	var $mod;
-	function bdiv($x, $y)
+	function __construct($x, $y)
 	{
 		global $bs;
 		global $bx2;
