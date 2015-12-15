@@ -2,10 +2,10 @@
 /** @package    php-gpg */
 
 /** require supporting files */
-require_once("GPG/Expanded_Key.php");
-require_once("GPG/Public_Key.php");
-require_once("GPG/AES.php");
-require_once("GPG/globals.php");
+require_once 'GPG/Expanded_Key.php';
+require_once 'GPG/Public_Key.php';
+require_once 'GPG/AES.php';
+require_once 'GPG/globals.php';
 
 /**
  * Pure PHP implementation of PHP/GPG encryption.  
