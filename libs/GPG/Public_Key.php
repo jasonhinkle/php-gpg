@@ -4,7 +4,7 @@
  * Might contain some changes by buli <phppgp@taurit.pl>
  */
 
-require_once("Expanded_Key.php");
+require_once 'Expanded_Key.php';
 
 define("PK_TYPE_ELGAMAL", 1);
 define("PK_TYPE_RSA", 0);
