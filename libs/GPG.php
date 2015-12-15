@@ -34,7 +34,7 @@ class GPG
 	private function gpg_encrypt($key, $text) {
 
 		$i = 0;
-		$len = strlen($text);
+		$len = mb_strlen($text);
 		$iblock = array_fill(0, $this->width, 0);
 		$rblock = array_fill(0, $this->width, 0);
 		$ct = array_fill(0, $this->width + 2, 0);
@@ -52,7 +52,7 @@ class GPG
 			$rblock[$i] = GPG_Utility::c_random();
 		}
 
-		for($n = 0; $n < strlen($text); $n += $this->width) {
+		for($n = 0; $n < mb_strlen($text); $n += $this->width) {
 			$iblock = GPG_AES::encrypt($iblock, $ekey);
 			for($i = 0; $i < $this->width; $i++) {
 				$iblock[$i] ^= ord($text[$n + $i]);
@@ -144,7 +144,7 @@ class GPG
 		if (strpos($text, "\r\n") === false)
 			$text = str_replace("\n", "\r\n", $text);
 
-		return chr(11 | 0xC0) . chr(255) . $this->writeNumber(strlen($text) + 10, 4) . "t" . chr(4) . "file\0\0\0\0" . $text;
+		return chr(11 | 0xC0) . chr(255) . $this->writeNumber(mb_strlen($text) + 10, 4) . "t" . chr(4) . "file\0\0\0\0" . $text;
 	}
 
 	private function gpg_data($key, $text)
@@ -180,7 +180,7 @@ class GPG
 		$code = wordwrap($code, 64, "\n", 1);
 
 		if($versionHeader===NULL) $versionHeader="Version: VerySimple PHP-GPG v" . $this->version . "\n\n";
-		else if (strlen($versionHeader)>0)$versionHeader="Version: " . $versionHeader . "\n\n";
+		else if (mb_strlen($versionHeader)>0)$versionHeader="Version: " . $versionHeader . "\n\n";
 
 		return
 			"-----BEGIN PGP MESSAGE-----\n" .
