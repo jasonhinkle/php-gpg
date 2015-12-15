@@ -2,7 +2,7 @@
 /** @package    php-gpg::GPG */
 
 /** require supporting files */
-require_once("Utility.php");
+require_once 'Utility.php';
 
 /**
  * @package    php-gpg::GPG
