@@ -2,7 +2,7 @@
 /** @package    php-gpg::GPG */
 
 /** require supporting files */
-require_once("Cipher.php");
+require_once 'Cipher.php';
 
 /**
  * @package    php-gpg::GPG
