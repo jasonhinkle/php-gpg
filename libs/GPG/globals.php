@@ -443,4 +443,11 @@ if(!function_exists('random_int')){
 	}
 }
 
+function safeStrlen($string) {
+    if (function_exists('mb_strlen')) {
+        return mb_strlen($string, '8bit');
+    }
+    return strlen($string);
+}
+
 ?>
