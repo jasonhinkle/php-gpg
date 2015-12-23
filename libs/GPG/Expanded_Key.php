@@ -69,8 +69,8 @@ class Expanded_Key {
         while($r < $rounds + 1) {
             $temp = $tk[$kc - 1];
 
-			$tk[0] ^= $S[GPG_Utility::B1($temp)] | ($S[GPG_Utility::B2($temp)] << 0x8) |
-				($S[GPG_Utility::B3($temp)] << 0x10) | ($S[GPG_Utility::B0($temp)] << 0x18);
+			$tk[0] ^= hexdec($S[GPG_Utility::B1($temp)]) | (hexdec($S[GPG_Utility::B2($temp)]) << 0x8) |
+				(hexdec($S[GPG_Utility::B3($temp)]) << 0x10) | (hexdec($S[GPG_Utility::B0($temp)]) << 0x18);
             $tk[0] ^= $RCON[$rconpointer++];
 
             if ($kc != 8) {
@@ -79,8 +79,8 @@ class Expanded_Key {
                 for($j = 1; $j < $kc / 2; $j++) $tk[$j] ^= $tk[$j - 1];
  
                 $temp = $tk[$kc / 2 - 1];
-				$tk[$kc / 2] ^= $S[GPG_Utility::B0($temp)] | ($S[GPG_Utility::B1($temp)] << 0x8) |
-					($S[GPG_Utility::B2($temp)] << 0x10) | ($S[GPG_Utility::B3($temp)] << 0x18);
+				$tk[$kc / 2] ^= hexdec($S[GPG_Utility::B0($temp)]) | (hexdec($S[GPG_Utility::B1($temp)]) << 0x8) |
+					(hexdec($S[GPG_Utility::B2($temp)]) << 0x10) | (hexdec($S[GPG_Utility::B3($temp)]) << 0x18);
 
                 for($j = $kc / 2 + 1; $j < $kc; $j++) $tk[$j] ^= $tk[$j - 1];
             }
