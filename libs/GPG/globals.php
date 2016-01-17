@@ -400,49 +400,6 @@ function bmul($a, $b) {
     return array_slice($r, 0, $n);
 }
 
-/** credits for the random_int polyfill go to https://github.com/paragonie/random_compat **/
-if(!function_exists('random_int')){
-	function random_int($min, $max) {
-		$attempts = $bits = $bytes = $mask = $valueShift = 0;
-		$range = $max - $min;
-		if (!is_int($range)) {
-			$bytes = PHP_INT_SIZE;
-			$mask = ~0;
-		} else {
-			while ($range > 0) {
-				if ($bits % 8 === 0) {
-				   ++$bytes;
-				}
-				++$bits;
-				$range >>= 1;
-				$mask = $mask << 1 | 1;
-			}
-			$valueShift = $min;
-		}
-		do {
-			if ($attempts > 128) {
-				throw new Exception(
-					'random_int: RNG is broken - too many rejections'
-				);
-			}
-			$randomByteString = random_bytes($bytes);
-			if ($randomByteString === false) {
-				throw new Exception(
-					'Random number generator failure'
-				);
-			}
-			$val = 0;
-			for ($i = 0; $i < $bytes; ++$i) {
-				$val |= ord($randomByteString[$i]) << ($i * 8);
-			}
-			$val &= $mask;
-			$val += $valueShift;
-			++$attempts;
-		} while (!is_int($val) || $val > $max || $val < $min);
-		return (int) $val;
-	}
-}
-
 function safeStrlen($string) {
     if (function_exists('mb_strlen')) {
         return mb_strlen($string, '8bit');
