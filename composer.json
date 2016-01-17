@@ -1,7 +1,7 @@
 {
     "require": {
     	"paragonie/random_compat": "1.1.*"
-    }
+    },
     "name": "jasonhinkle/php-gpg",
     "description": "GPG / PGP port written in pure PHP with no binary dependencies",
     "type": "library",
