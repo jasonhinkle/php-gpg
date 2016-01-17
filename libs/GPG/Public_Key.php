@@ -161,10 +161,10 @@ class GPG_Public_Key {
 				if ($len == 0) $len = ord($sa[$i++]);
                                 else if($len == 1) $len = (ord($sa[$i++]) << 8) + ord($sa[$i++]);
                                 else if($len == 2){
-                                    $oc1=isset($sa[$i++])?$sa[$i++]:NULL;
-                                    $oc2=isset($sa[$i++])?$sa[$i++]:NULL;
-                                    $oc3=isset($sa[$i++])?$sa[$i++]:NULL;
-                                    $oc4=isset($sa[$i++])?$sa[$i++]:NULL;
+                                    $oc1=isset($sa[++$i])?$sa[$i]:NULL;
+				    $oc2=isset($sa[++$i])?$sa[$i]:NULL;
+				    $oc3=isset($sa[++$i])?$sa[$i]:NULL;
+				    $oc4=isset($sa[++$i])?$sa[$i]:NULL;
                     
                                     if($oc1!==NULL)$len = ord($oc1)* pow(2,24);
                                     else $len = (0* pow(2,24));
