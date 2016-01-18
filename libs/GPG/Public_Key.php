@@ -88,7 +88,7 @@ class GPG_Public_Key {
 				$tag &= 63;
 				$len = ord($sa[$i++]);
 				if ($len > 191 && $len < 224) $len = (($len - 192) << 8) + ord($sa[$i++]);
-				else if ($len == 255){
+				/*else if ($len == 255){
 				$oc1=isset($sa[++$i])?$sa[$i]:NULL;
 				$oc2=isset($sa[++$i])?$sa[$i]:NULL;
 				$oc3=isset($sa[++$i])?$sa[$i]:NULL;
@@ -105,8 +105,8 @@ class GPG_Public_Key {
 
 				if($oc4!==NULL)$len += ord($oc4);
 				else $len += (0);
-				}
-				// else if ($len == 255) $len = (ord($sa[$i++]) << 24) + (ord($sa[$i++]) << 16) + (ord($sa[$i++]) << 8) + ord($sa[$i++]);
+				}*/
+				else if ($len == 255) $len = (ord($sa[$i++]) << 24) + (ord($sa[$i++]) << 16) + (ord($sa[$i++]) << 8) + ord($sa[$i++]);
 				else if ($len > 223 && $len < 255) $len = (1 << ($len & 0x1f));
 			} else {
 				$len = $tag & 3;
