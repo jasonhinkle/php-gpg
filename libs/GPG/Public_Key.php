@@ -110,7 +110,7 @@ class GPG_Public_Key {
 					if($oc3!==NULL)$len += ord($oc3)* pow(2,8);
 					else $len += (0* pow(2,8));
 
-					if($oc3!==NULL)$len += ord($oc4);
+					if($oc4!==NULL)$len += ord($oc4);
 					else $len += (0);
 					// $len = (ord($sa[$i++])* pow(2,24)) + (ord($sa[$i++]) * pow(2,16)) + (0 * pow(2,8)) + 0;
 				}
