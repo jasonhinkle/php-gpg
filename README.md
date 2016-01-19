@@ -18,6 +18,7 @@ Usage
 -----
 
 ```php
+require __DIR__ . '/vendor/autoload.php';
 require_once 'libs/GPG.php';
 
 $gpg = new GPG();
