@@ -13,6 +13,12 @@ Features/Limitations
  * Encrypted messages are integrity protected (php-gpg 1.6.0+)
 
 Hey You!  If you have a good understanding of public key encryption and want to implement signing or decryption your pull request would be welcome.
+
+Composer
+-----
+If you use PHP < 7.0, please install random_compat with Composer.
+
+Just run `php composer.phar install` or `composer install` in the directory of the composer.json file.
  
 Usage
 -----
