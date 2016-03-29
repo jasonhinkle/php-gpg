@@ -330,4 +330,3 @@ class GPG_Cipher
 
 
 }
-?>
