@@ -59,5 +59,3 @@ class GPG_AES
 		return GPG_Utility::unpack_octets($b);
 	}
 }
-
-?>
