@@ -101,5 +101,3 @@ class Expanded_Key {
         return $this;
     }
 }
-
-?>
