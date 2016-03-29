@@ -124,4 +124,3 @@ class GPG_Utility
 	}
 
 }
-?>
