@@ -191,5 +191,3 @@ class GPG
 			"\n-----END PGP MESSAGE-----\n";
 	}
 }
-
-?>
