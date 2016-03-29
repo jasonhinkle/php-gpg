@@ -366,5 +366,3 @@ class GPG_Public_Key {
 		$ek = new Expanded_Key($this->public_key);
 	}
 }
-
-?>
