@@ -1,6 +1,8 @@
 php-gpg
 =======
 
+**This project is currently not actively maintained, please take a look at https://github.com/singpolyma/openpgp-php as alternative.**
+
 php-gpg is a pure PHP implementation of GPG/PGP (currently supports encryption only).  The library does not require PGP/GPG binaries and should run on any platform that supports PHP.
 
 This library is useful for encrypting data before it is sent over an insecure protocol (for example email).  Messages encrypted with this library are compatible and can be decrypted by standard GPG/PGP clients.
