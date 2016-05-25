@@ -8,8 +8,10 @@ set_include_path(
 		PATH_SEPARATOR . get_include_path()
 );
 
-require_once 'PHPUnit/Framework/TestCase.php';
-require_once 'GPG.php';
+require ('../vendor/autoload.php');
+
+//require_once 'PHPUnit/Framework/TestCase.php';
+//require_once 'GPG.php';
 
 /**
  * 
